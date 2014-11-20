@@ -1,18 +1,23 @@
-#include <Adafruit_NeoPixel.h>
+/**
+ * This is where the fucking magic happens, yo
+ */
 
 #define PIN 5
-#define NUMPIXELS 60
-#define LEVEL 64
+#define NUMPIXELS 48
 
-struct Adafruit {
+#include <Adafruit_NeoPixel.h>
+
+struct Backend {
+
+protected:
+  virtual void setPixel(int idx, int r, int g, int b) = 0;
+  virtual void show() = 0;
+};
+
+struct Adafruit : Backend {
 
   Adafruit() {
     m_pixels = new Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-    m_pixels->begin();
-  }
-
-  Adafruit(Adafruit_NeoPixel *pixels) {
-    m_pixels = pixels;
     m_pixels->begin();
   }
 
@@ -53,19 +58,22 @@ struct SerialStrobe : Pattern {
   virtual void apply() {
     int sleep_for = 15;
     for(int idx = 0; idx < NUMPIXELS; idx++) {
-      setPixel(idx, LEVEL, 0, 0);
+      setPixel(idx, m_level, 0, 0);
       show();
       delay(sleep_for);
-      setPixel(idx, 0, LEVEL, 0);
+      setPixel(idx, 0, m_level, 0);
       show();
       delay(sleep_for);
-      setPixel(idx, 0, 0, LEVEL);
+      setPixel(idx, 0, 0, m_level);
       show();
       delay(sleep_for);
       setPixel(idx, 0, 0, 0);
       show();
     }
   }
+private:
+
+  int m_level = 64;
 };
 
 struct WalkWhite : Pattern {
