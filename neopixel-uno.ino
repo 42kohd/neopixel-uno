@@ -241,22 +241,22 @@ void setup() {
   randomSeed(analogRead(0));
 
   switch(random(4)) {
+    case 4:
+      pattern = new Random(&pixels);
+      break;
     case 3:
       pattern = new SerialStrobe(&pixels);
       break;
     case 2:
-      pattern = new Random(&pixels);
-      break;
-    case 1:
       pattern = new GlowWorm(&pixels);
       break;
-    case 0:
+    case 1:
       pattern = new WalkWhite(&pixels);
       break;
-
+    case 0:
+      pattern = new Heating(&pixels);
+      break;
   }
-  pattern = new Heating(&pixels);
-  //pattern = new WalkWhite(&pixels);
 }
 
 void loop() {
