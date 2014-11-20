@@ -6,6 +6,11 @@
 
 struct Adafruit {
 
+  Adafruit() {
+    m_pixels = new Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+    m_pixels->begin();
+  }
+
   Adafruit(Adafruit_NeoPixel *pixels) {
     m_pixels = pixels;
     m_pixels->begin();
@@ -21,20 +26,16 @@ protected:
   void show() {
     m_pixels->show();
   }
-
-  void setup() {
-    m_pixels->begin();
-  }
 };
 
 struct Pattern : Adafruit {
-  Pattern(Adafruit_NeoPixel *pixels) : Adafruit(pixels) { }
+  Pattern() : Adafruit() { }
 
   virtual void apply() = 0;
 };
 
 struct Random : Pattern {
-  Random(Adafruit_NeoPixel *pixels) : Pattern(pixels) { }
+  Random() = default;
 
   virtual void apply() {
     int maxval = 16;
@@ -47,7 +48,7 @@ struct Random : Pattern {
 };
 
 struct SerialStrobe : Pattern {
-  SerialStrobe(Adafruit_NeoPixel *pixels) : Pattern(pixels) { }
+  SerialStrobe() : Pattern() { }
 
   virtual void apply() {
     int sleep_for = 15;
@@ -68,7 +69,7 @@ struct SerialStrobe : Pattern {
 };
 
 struct WalkWhite : Pattern {
-  WalkWhite(Adafruit_NeoPixel *pixels) : Pattern(pixels) { }
+  WalkWhite() : Pattern() { }
 
   virtual void apply() {
     for(int idx = 0; idx < NUMPIXELS; idx++) {
@@ -83,7 +84,7 @@ struct WalkWhite : Pattern {
 };
 
 struct GlowWorm : Pattern {
-  GlowWorm(Adafruit_NeoPixel *pixels) : Pattern(pixels) {
+  GlowWorm() : Pattern() {
     m_r = 0;
     m_g = 0;
     m_b = 0;
@@ -154,7 +155,7 @@ private:
 };
 
 struct Heating : Pattern {
-  Heating(Adafruit_NeoPixel *pixels) : Pattern(pixels) {
+  Heating() : Pattern() {
     m_focus = random(NUMPIXELS);
     memset(m_elements, 0, NUMPIXELS * sizeof(int));
 
@@ -229,32 +230,28 @@ void blink(int sleep) {
   delay(sleep);
 }
 
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 Pattern *pattern;
 
 void setup() {
   pinMode(13, OUTPUT);
-  //pattern = new SerialStrobe(&pixels);
-  //pattern = new GlowWorm(&pixels);
-  pattern = new Random(&pixels);
 
   randomSeed(analogRead(0));
 
   switch(random(4)) {
     case 4:
-      pattern = new Random(&pixels);
+      pattern = new Random();
       break;
     case 3:
-      pattern = new SerialStrobe(&pixels);
+      pattern = new SerialStrobe();
       break;
     case 2:
-      pattern = new GlowWorm(&pixels);
+      pattern = new GlowWorm();
       break;
     case 1:
-      pattern = new WalkWhite(&pixels);
+      pattern = new WalkWhite();
       break;
     case 0:
-      pattern = new Heating(&pixels);
+      pattern = new Heating();
       break;
   }
 }
