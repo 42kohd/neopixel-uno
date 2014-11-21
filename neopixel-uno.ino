@@ -65,8 +65,10 @@ protected:
   }
 };
 
-struct Pattern : Adafruit {
-  Pattern() : Adafruit() { }
+//struct Pattern : Adafruit {
+//  Pattern() : Adafruit() { }
+struct Pattern : Octo {
+  Pattern() : Octo() { }
 
   virtual void apply() = 0;
 };
