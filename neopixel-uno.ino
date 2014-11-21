@@ -6,8 +6,6 @@
 #define NUMPIXELS 100
 #define PIXELS_PER_STRIP 50
 
-#include <Adafruit_NeoPixel.h>
-
 struct Backend {
 
 protected:
@@ -15,6 +13,8 @@ protected:
   virtual void show() = 0;
 };
 
+
+#include <Adafruit_NeoPixel.h>
 struct Adafruit : Backend {
 
   Adafruit() {
