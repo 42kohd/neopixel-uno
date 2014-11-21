@@ -3,7 +3,7 @@
  */
 
 #define PIN 2
-#define NUMPIXELS 100
+#define NUMPIXELS 50
 #define PIXELS_PER_STRIP 50
 
 struct Backend {
