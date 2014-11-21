@@ -123,6 +123,46 @@ struct WalkWhite : Pattern {
   }
 };
 
+#include <Color.h>
+struct Bounce : Pattern {
+
+  Bounce() : Pattern() { }
+
+  virtual void apply() {
+
+    Color cur_color = Color(1, 1, 1);
+    float hue = 0;
+    float sat = 0.8;
+    float val = 0.2;
+    float newhue = 1;
+
+    for(int idx = 0; idx < NUMPIXELS; idx++) {
+      hue += 0.01;
+      if ( hue >=1 ) hue = 0;
+      newhue = 1 - hue;
+      cur_color.convert_hcl_to_rgb(newhue,sat,val);
+      setPixel(idx, cur_color.red, cur_color.green, cur_color.blue);
+      //display_color(cur_color);
+      delay(20);
+      //setPixel(idx, cur_color);
+      show();
+      delay(1 + idx / 4);
+      //setPixel(idx, 0, 0, 0);
+
+    }
+    for(int idx = NUMPIXELS - 1; idx > 0; idx--) {
+      //setPixel(idx, i_red, i_green, i_blue);
+      delay(1 + idx / 4);
+      setPixel(idx, 0, 0, 0);
+      show();
+    }
+  }
+
+  private:
+
+  int m_pos;
+};
+
 struct GlowWorm : Pattern {
   GlowWorm() : Pattern() {
     m_r = 0;
