@@ -117,8 +117,8 @@ struct WalkWhite : Pattern {
       show();
       delay(10);
       setPixel(idx, 0, 0, 0);
-      delay(10);
       show();
+      delay(10);
     }
   }
 };
