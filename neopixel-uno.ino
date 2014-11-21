@@ -314,28 +314,35 @@ void blink(int sleep) {
 
 Pattern *pattern;
 
-void setup() {
-  pinMode(13, OUTPUT);
-
+Pattern* randomPattern() {
+  Pattern *p;
   randomSeed(analogRead(0));
-
   switch(random(4)) {
-    case 4:
-      pattern = new Random();
-      break;
-    case 3:
-      pattern = new SerialStrobe();
-      break;
-    case 2:
-      pattern = new GlowWorm();
+    case 0:
+      p = new Random();
       break;
     case 1:
-      pattern = new WalkWhite();
+      p = new SerialStrobe();
       break;
-    case 0:
-      pattern = new Heating();
+    case 2:
+      p = new GlowWorm();
+      break;
+    case 3:
+      p = new WalkWhite();
+      break;
+    case 4:
+      p = new Heating();
+      break;
+    case 5:
+      p = new Bounce();
       break;
   }
+  return p;
+}
+
+void setup() {
+  pinMode(13, OUTPUT);
+  pattern = randomPattern();
 }
 
 void loop() {
