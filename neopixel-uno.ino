@@ -34,6 +34,37 @@ protected:
   }
 };
 
+#include <OctoWS2811.h>
+struct Octo : Backend {
+  Octo() {
+    m_frameBuf = new int[NUMPIXELS * 6];
+    m_drawBuf  = new int[NUMPIXELS * 6];
+
+    //m_pixels = new OctoWS2811(PIXELS_PER_STRIP, m_frameBuf, m_drawBuf, WS2811_GRB + WS2811_800kHz);
+    m_pixels = new OctoWS2811(PIXELS_PER_STRIP, m_frameBuf, m_drawBuf, WS2811_RGB + WS2811_800kHz);
+    m_pixels->begin();
+  }
+
+  ~Octo() {
+    delete[] m_frameBuf;
+    delete[] m_drawBuf;
+  }
+
+protected:
+  void *m_frameBuf;
+  void *m_drawBuf;
+  OctoWS2811 *m_pixels;
+
+  void setPixel(int idx, int r, int g, int b) {
+    m_pixels->setPixel(idx, r, g, b);
+  }
+
+  void show() {
+    m_pixels->show();
+    while(m_pixels->busy());
+  }
+};
+
 struct Pattern : Adafruit {
   Pattern() : Adafruit() { }
 
