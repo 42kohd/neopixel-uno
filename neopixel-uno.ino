@@ -3,7 +3,7 @@
  */
 
 #define PIN 2
-#define NUMPIXELS 48
+#define NUMPIXELS 50
 
 #include <Adafruit_NeoPixel.h>
 
