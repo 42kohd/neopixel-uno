@@ -2,7 +2,7 @@
  * This is where the fucking magic happens, yo
  */
 
-#define PIN 5
+#define PIN 2
 #define NUMPIXELS 48
 
 #include <Adafruit_NeoPixel.h>
